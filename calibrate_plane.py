@@ -91,3 +91,6 @@ with Robot() as robot:
         plane_size = np.maximum(0.3, 2.2 * radius)
         detector.draw_plane((n[0], n[1], n[2], -offset),
                             center = centroid, size = plane_size, color = 0x3080FF)
+        
+        input("\nPlane drawn. Take your screenshot, then press Enter to sweep again ")
+        
