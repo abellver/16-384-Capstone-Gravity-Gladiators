@@ -8,7 +8,7 @@ forward_kinematics = _kin.forward_kinematics
 move_ee = _kin.move_ee
 
 
-SABER_COLOR = "blue"
+SABER_COLOR = "green"
 
 def _extract_two_points(raw):
     if raw is None:
