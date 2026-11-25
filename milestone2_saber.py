@@ -17,7 +17,7 @@ SAVED_JOINTS = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
 
 DISTANCE_MM = 85.0
 
-HOLD_EE_MM = np.array([450.0, 0.0, 400.0])
+HOLD_EE_MM = np.array([450.0, 0.0, 250.0])
 
 SPEED = 0.3   
 
@@ -67,7 +67,7 @@ def move_to_ee_pose(robot, T_target, label):
         if not ok:
             continue
         safe, problems = is_safe(q_sol, q_now)
-        violation = robot.check_safety(q_sol)
+        violation, _ = robot.guard.check_path(q_now, q_sol)
         if not safe or violation is not None:
             continue
         jump = np.max(np.abs(q_sol - q_now))
@@ -109,6 +109,9 @@ def main():
         from libcapstone import LightsaberDetector
         detector = LightsaberDetector()
     above_saber = np.array(SAVED_JOINTS, dtype=float)
+    for k in (0, 2, 4, 6):
+        above_saber[k] = (above_saber[k] + np.pi) % (2 * np.pi) - np.pi
+        
     if not REAL_ARM and not np.any(above_saber):
         above_saber = np.array([0.0, 0.15, 0.0, 1.0, 0.0, 0.85, 0.0])
 
